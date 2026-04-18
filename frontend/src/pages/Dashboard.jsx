@@ -1,35 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { taskService, streakService } from '../services/api';
-import '../styles/Dashboard.css';
-
-const Dashboard = ({ user }) => {
-  const [stats, setStats] = useState(null);
-  const [streak, setStreak] = useState(null);
-  const [upcomingTasks, setUpcomingTasks] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const inspirationalQuotes = [
-    "Success is the sum of small efforts repeated day in and day out.",
-    "The only way to do great work is to love what you do.",
-    "Your future depends on what you do today.",
-    "Excellence is not a destination; it is a continuous journey.",
-    "Believe in yourself and you're halfway there.",
-    "Don't watch the clock; do what it does. Keep going.",
-    "The expert in anything was once a beginner.",
-    "Strive for progress, not perfection.",
-    "You are capable of amazing things.",
-    "Success is the result of preparation, hard work, and learning from failure."
-  ];
-
-  const getRandomQuote = () => {
-    return inspirationalQuotes[Math.floor(Math.random() * inspirationalQuotes.length)];
-  };
-
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
 import { API_BASE_URL } from '../config';
+import '../styles/Dashboard.css';
 
 const Dashboard = ({ user }) => {
   const [stats, setStats] = useState(null);

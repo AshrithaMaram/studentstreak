@@ -41,7 +41,7 @@ const Signup = ({ onSignup, onSwitchToLogin }) => {
         formData.lastName
       );
     } catch (err) {
-      setError(err.response?.data?.error || 'Signup failed');
+      setError(err.response?.data?.error || err.message || 'Signup failed');
     } finally {
       setIsLoading(false);
     }

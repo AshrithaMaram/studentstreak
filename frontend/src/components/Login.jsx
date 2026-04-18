@@ -25,7 +25,7 @@ const Login = ({ onLogin, onSwitchToSignup }) => {
     try {
       await onLogin(formData.username, formData.password);
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
+      setError(err.response?.data?.error || err.message || 'Login failed');
     } finally {
       setIsLoading(false);
     }

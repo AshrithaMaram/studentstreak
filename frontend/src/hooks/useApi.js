@@ -14,7 +14,7 @@ export const useAuth = () => {
       setUser(data.user);
       return data;
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
+      setError(err.response?.data?.error || err.message || 'Login failed');
       throw err;
     } finally {
       setIsLoading(false);
@@ -37,7 +37,7 @@ export const useAuth = () => {
       setUser(data.user);
       return data;
     } catch (err) {
-      setError(err.response?.data?.error || 'Signup failed');
+      setError(err.response?.data?.error || err.message || 'Signup failed');
       throw err;
     } finally {
       setIsLoading(false);
