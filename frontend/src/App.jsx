@@ -5,7 +5,7 @@ import Dashboard from './pages/Dashboard';
 import TaskManager from './pages/TaskManager';
 import GoalTracker from './pages/GoalTracker';
 import PomodoroTimer from './pages/PomodoroTimer';
-import { API_BASE_URL } from './config';
+import { API_BASE_URL, API_NOT_CONFIGURED, API_NOT_CONFIGURED_MESSAGE } from './config';
 import './styles/App.css';
 
 function App() {
@@ -112,6 +112,11 @@ function App() {
   if (!user) {
     return (
       <div className={`app ${darkMode ? 'dark-mode' : ''}`}>
+        {API_NOT_CONFIGURED && (
+          <div className="error-message" style={{ margin: '1rem auto', maxWidth: '500px' }}>
+            {API_NOT_CONFIGURED_MESSAGE}
+          </div>
+        )}
         {authMode === 'login' ? (
           <Login
             onLogin={handleLogin}
