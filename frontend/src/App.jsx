@@ -18,6 +18,26 @@ function App() {
     checkAuth();
   }, []);
 
+  const parseApiResponse = async (response) => {
+    const text = await response.text().catch(() => '');
+    let data = null;
+    try {
+      data = text ? JSON.parse(text) : null;
+    } catch {
+      data = null;
+    }
+    return { data, text };
+  };
+
+  const getApiErrorMessage = (data, text, defaultMessage) => {
+    if (data?.error) return data.error;
+    if (data?.message) return data.message;
+    if (text && /<\s*html/i.test(text)) {
+      return 'The API returned HTML instead of JSON. The backend is likely not reachable or the API URL is incorrect.';
+    }
+    return defaultMessage;
+  };
+
   const checkAuth = () => {
     const token = localStorage.getItem('access_token');
     if (token) {
@@ -51,15 +71,17 @@ function App() {
       },
       body: JSON.stringify({ username, password })
     });
-    
-    const data = await response.json();
-    if (response.ok) {
+
+    const { data, text } = await parseApiResponse(response);
+    if (response.ok && data) {
       localStorage.setItem('access_token', data.access_token);
       setUser(data.user);
       setCurrentPage('dashboard');
-    } else {
-      throw new Error(data.error);
+      return;
     }
+
+    const errorMessage = getApiErrorMessage(data, text, `Login request failed with status ${response.status}`);
+    throw new Error(errorMessage);
   };
 
   const handleSignup = async (username, email, password, firstName, lastName) => {
@@ -77,15 +99,17 @@ function App() {
         last_name: lastName
       })
     });
-    
-    const data = await response.json();
-    if (response.ok) {
+
+    const { data, text } = await parseApiResponse(response);
+    if (response.ok && data) {
       localStorage.setItem('access_token', data.access_token);
       setUser(data.user);
       setCurrentPage('dashboard');
-    } else {
-      throw new Error(data.error);
+      return;
     }
+
+    const errorMessage = getApiErrorMessage(data, text, `Signup request failed with status ${response.status}`);
+    throw new Error(errorMessage);
   };
 
   const handleLogout = () => {
